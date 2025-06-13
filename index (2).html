@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avocado Queens - Сеть ресторанов по всей России</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#2E7D32',secondary:'#558B2F'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Montserrat', sans-serif;
+}
+.hero-slider {
+position: relative;
+height: 80vh;
+overflow: hidden;
+}
+.hero-slide {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+opacity: 0;
+transition: opacity 1s ease-in-out;
+}
+.hero-slide.active {
+opacity: 1;
+}
+.slider-nav {
+position: absolute;
+bottom: 2rem;
+left: 50%;
+transform: translateX(-50%);
+display: flex;
+gap: 1rem;
+}
+.slider-dot {
+width: 12px;
+height: 12px;
+border-radius: 50%;
+background-color: rgba(255, 255, 255, 0.5);
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+.slider-dot.active {
+background-color: #fff;
+}
+.masonry-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+grid-gap: 1.5rem;
+grid-auto-flow: dense;
+}
+.masonry-item:nth-child(3n+1) {
+grid-row: span 1;
+}
+.masonry-item:nth-child(3n+2) {
+grid-row: span 2;
+}
+.masonry-item:nth-child(3n) {
+grid-row: span 1;
+}
+.chef-card {
+transition: transform 0.3s ease;
+}
+.chef-card:hover {
+transform: translateY(-10px);
+}
+.food-gallery-item {
+overflow: hidden;
+position: relative;
+}
+.food-gallery-item img {
+transition: transform 0.5s ease;
+}
+.food-gallery-item:hover img {
+transform: scale(1.05);
+}
+.food-gallery-caption {
+position: absolute;
+bottom: 0;
+left: 0;
+right: 0;
+background: rgba(0, 0, 0, 0.7);
+color: white;
+padding: 1rem;
+transform: translateY(100%);
+transition: transform 0.3s ease;
+}
+.food-gallery-item:hover .food-gallery-caption {
+transform: translateY(0);
+}
+</style>
+</head>
+<body class="bg-gray-50">
+<!-- Навигация -->
+<nav class="bg-white shadow-md sticky top-0 z-50">
+<div class="container mx-auto px-6 py-3">
+<div class="flex justify-between items-center">
+<div class="flex items-center">
+<a href="#" class="text-3xl font-['Pacifico'] text-primary">Avocado Queens</a>
+</div>
+<div class="hidden md:flex items-center space-x-8">
+<a href="#restaurants" class="text-gray-700 hover:text-primary transition-colors">Рестораны</a>
+<a href="#map" class="text-gray-700 hover:text-primary transition-colors">Карта</a>
+<a href="#team" class="text-gray-700 hover:text-primary transition-colors">Команда</a>
+<a href="#gallery" class="text-gray-700 hover:text-primary transition-colors">Галерея блюд</a>
+<a href="#contact" class="text-gray-700 hover:text-primary transition-colors">Контакты</a>
+<button class="bg-primary text-white px-6 py-2 !rounded-button hover:bg-opacity-90 transition-colors whitespace-nowrap">Забронировать столик</button>
+</div>
+<div class="md:hidden flex items-center">
+<button class="text-gray-700 hover:text-primary focus:outline-none">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-menu-line ri-2x"></i>
+</div>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<!-- Главный баннер (Hero) -->
+<section class="hero-slider">
+<div class="hero-slide active" style="background-image: url('https://readdy.ai/api/search-image?query=luxury%20restaurant%20interior%20with%20elegant%20tables%2C%20soft%20lighting%2C%20modern%20design%2C%20avocado-themed%20decor%20elements%2C%20high-end%20dining%20experience%2C%20professional%20photography%2C%20wide%20angle%20shot%2C%20evening%20atmosphere%2C%20customers%20enjoying%20meals%2C%20stylish%20bar%20area%2C%20high%20ceilings%2C%20premium%20quality%20image&width=1920&height=1080&seq=1&orientation=landscape'); background-size: cover; background-position: center;">
+<div class="absolute inset-0 bg-black bg-opacity-40"></div>
+<div class="container mx-auto px-6 h-full flex items-center">
+<div class="text-white max-w-2xl">
+<h1 class="text-5xl font-bold mb-4">Avocado Queens</h1>
+<p class="text-2xl mb-8">Изысканная кухня в каждом уголке России</p>
+<button class="bg-primary text-white px-8 py-3 !rounded-button hover:bg-opacity-90 transition-colors mr-4 whitespace-nowrap">Найти ресторан</button>
+<button class="bg-white text-primary px-8 py-3 !rounded-button hover:bg-opacity-90 transition-colors whitespace-nowrap">Меню</button>
+</div>
+</div>
+</div>
+<div class="hero-slide" style="background-image: url('https://readdy.ai/api/search-image?query=gourmet%20dish%20presentation%20with%20avocado%20elements%2C%20professional%20food%20photography%2C%20restaurant%20signature%20dish%2C%20artistic%20plating%2C%20chef%20masterpiece%2C%20soft%20natural%20lighting%2C%20premium%20ingredients%2C%20vibrant%20colors%2C%20shallow%20depth%20of%20field%2C%20high-end%20dining%20experience%2C%20luxury%20restaurant%20setting&width=1920&height=1080&seq=2&orientation=landscape'); background-size: cover; background-position: center;">
+<div class="absolute inset-0 bg-black bg-opacity-40"></div>
+<div class="container mx-auto px-6 h-full flex items-center">
+<div class="text-white max-w-2xl">
+<h1 class="text-5xl font-bold mb-4">Авторская кухня</h1>
+<p class="text-2xl mb-8">Уникальные блюда от лучших шеф-поваров страны</p>
+<button class="bg-primary text-white px-8 py-3 !rounded-button hover:bg-opacity-90 transition-colors mr-4 whitespace-nowrap">Забронировать столик</button>
+<button class="bg-white text-primary px-8 py-3 !rounded-button hover:bg-opacity-90 transition-colors whitespace-nowrap">Специальные предложения</button>
+</div>
+</div>
+</div>
+<div class="hero-slide" style="background-image: url('https://readdy.ai/api/search-image?query=elegant%20outdoor%20restaurant%20terrace%20with%20city%20view%2C%20evening%20atmosphere%2C%20avocado-themed%20decor%2C%20customers%20enjoying%20dinner%2C%20professional%20restaurant%20photography%2C%20soft%20ambient%20lighting%2C%20luxury%20dining%20experience%2C%20beautiful%20table%20settings%2C%20premium%20quality%20image%2C%20wide%20angle%20shot&width=1920&height=1080&seq=3&orientation=landscape'); background-size: cover; background-position: center;">
+<div class="absolute inset-0 bg-black bg-opacity-40"></div>
+<div class="container mx-auto px-6 h-full flex items-center">
+<div class="text-white max-w-2xl">
+<h1 class="text-5xl font-bold mb-4">Особая атмосфера</h1>
+<p class="text-2xl mb-8">Незабываемые впечатления в каждом из наших ресторанов</p>
+<button class="bg-primary text-white px-8 py-3 !rounded-button hover:bg-opacity-90 transition-colors mr-4 whitespace-nowrap">Виртуальный тур</button>
+<button class="bg-white text-primary px-8 py-3 !rounded-button hover:bg-opacity-90 transition-colors whitespace-nowrap">О нас</button>
+</div>
+</div>
+</div>
+<div class="slider-nav">
+<div class="slider-dot active" data-index="0"></div>
+<div class="slider-dot" data-index="1"></div>
+<div class="slider-dot" data-index="2"></div>
+</div>
+<button class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 hover:bg-opacity-50 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" id="prev-slide">
+<div class="w-12 h-12 flex items-center justify-center">
+<i class="ri-arrow-left-s-line ri-2x"></i>
+</div>
+</button>
+<button class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 hover:bg-opacity-50 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" id="next-slide">
+<div class="w-12 h-12 flex items-center justify-center">
+<i class="ri-arrow-right-s-line ri-2x"></i>
+</div>
+</button>
+</section>
+<!-- Карта ресторанов -->
+<section id="map" class="py-16 bg-white">
+<div class="container mx-auto px-6">
+<h2 class="text-4xl font-bold text-center mb-12">Наши рестораны</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<div class="bg-gray-50 p-6 rounded-lg shadow-lg">
+<h3 class="text-xl font-semibold mb-4">Москва</h3>
+<ul class="space-y-4">
+<li>
+<h4 class="font-medium">Центральный</h4>
+<p class="text-gray-600">ул. Тверская, 5</p>
+<p class="text-gray-600">Пн-Вс: 12:00-00:00</p>
+</li>
+<li>
+<h4 class="font-medium">Арбат</h4>
+<p class="text-gray-600">ул. Арбат, 12</p>
+<p class="text-gray-600">Пн-Вс: 10:00-23:00</p>
+</li>
+</ul>
+</div>
+<div class="bg-gray-50 p-6 rounded-lg shadow-lg">
+<h3 class="text-xl font-semibold mb-4">Санкт-Петербург</h3>
+<ul class="space-y-4">
+<li>
+<h4 class="font-medium">Невский</h4>
+<p class="text-gray-600">Невский пр., 78</p>
+<p class="text-gray-600">Пн-Вс: 11:00-23:00</p>
+</li>
+</ul>
+</div>
+<div class="bg-gray-50 p-6 rounded-lg shadow-lg">
+<h3 class="text-xl font-semibold mb-4">Другие города</h3>
+<ul class="space-y-4">
+<li>
+<h4 class="font-medium">Казань</h4>
+<p class="text-gray-600">ул. Баумана, 31</p>
+<p class="text-gray-600">Пн-Вс: 12:00-00:00</p>
+</li>
+<li>
+<h4 class="font-medium">Сочи</h4>
+<p class="text-gray-600">ул. Морская, 15</p>
+<p class="text-gray-600">Пн-Вс: 10:00-02:00</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- Галерея ресторанов -->
+<section id="restaurants" class="py-16 bg-gray-50">
+<div class="container mx-auto px-6">
+<h2 class="text-4xl font-bold text-center mb-4">Наши рестораны</h2>
+<p class="text-xl text-center text-gray-600 mb-12">Уникальный дизайн и атмосфера в каждом городе</p>
+<div class="flex justify-center mb-8">
+<div class="inline-flex bg-gray-200 p-1 rounded-full">
+<button class="px-6 py-2 rounded-full bg-primary text-white whitespace-nowrap">Все города</button>
+<button class="px-6 py-2 rounded-full text-gray-700 hover:bg-gray-300 whitespace-nowrap">Москва</button>
+<button class="px-6 py-2 rounded-full text-gray-700 hover:bg-gray-300 whitespace-nowrap">Санкт-Петербург</button>
+<button class="px-6 py-2 rounded-full text-gray-700 hover:bg-gray-300 whitespace-nowrap">Другие</button>
+</div>
+</div>
+<div class="masonry-grid">
+<div class="masonry-item">
+<div class="bg-white rounded-lg overflow-hidden shadow-lg h-full">
+<img src="https://readdy.ai/api/search-image?query=elegant%20restaurant%20interior%20with%20avocado-themed%20decor%2C%20Moscow%20city%20view%20through%20large%20windows%2C%20professional%20interior%20photography%2C%20soft%20evening%20lighting%2C%20luxury%20dining%20space%2C%20modern%20design%2C%20high-end%20furniture%2C%20sophisticated%20atmosphere%2C%20premium%20quality%20image&width=600&height=400&seq=4&orientation=landscape" alt="Ресторан в Москве" class="w-full h-48 object-cover object-top">
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">Москва - Центральный</h3>
+<p class="text-gray-600 mb-4">ул. Тверская, 5</p>
+<div class="flex items-center mb-4">
+<div class="flex text-yellow-400">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-half-fill"></i>
+</div>
+<span class="text-gray-600 ml-2">4.8 (324 отзыва)</span>
+</div>
+<button class="w-full bg-primary text-white py-2 !rounded-button hover:bg-opacity-90 transition-colors whitespace-nowrap">Подробнее</button>
+</div>
+</div>
+</div>
+<div class="masonry-item">
+<div class="bg-white rounded-lg overflow-hidden shadow-lg h-full">
+<img src="https://readdy.ai/api/search-image?query=luxury%20restaurant%20with%20Saint%20Petersburg%20historical%20architecture%20elements%20visible%20through%20windows%2C%20avocado-themed%20interior%20design%2C%20professional%20photography%2C%20evening%20atmosphere%2C%20elegant%20dining%20tables%2C%20soft%20lighting%2C%20high-end%20experience%2C%20premium%20quality%20image&width=600&height=800&seq=5&orientation=portrait" alt="Ресторан в Санкт-Петербурге" class="w-full h-72 object-cover object-top">
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">Санкт-Петербург - Невский</h3>
+<p class="text-gray-600 mb-4">Невский пр., 78</p>
+<div class="flex items-center mb-4">
+<div class="flex text-yellow-400">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+</div>
+<span class="text-gray-600 ml-2">5.0 (216 отзывов)</span>
+</div>
+<button class="w-full bg-primary text-white py-2 !rounded-button hover:bg-opacity-90 transition-colors whitespace-nowrap">Подробнее</button>
+</div>
+</div>
+</div>
+<div class="masonry-item">
+<div class="bg-white rounded-lg overflow-hidden shadow-lg h-full">
+<img src="https://readdy.ai/api/search-image?query=modern%20restaurant%20terrace%20with%20Black%20Sea%20view%20in%20Sochi%2C%20avocado-themed%20decor%20elements%2C%20outdoor%20dining%20area%2C%20professional%20photography%2C%20summer%20atmosphere%2C%20luxury%20dining%20experience%2C%20elegant%20table%20settings%2C%20palm%20trees%2C%20premium%20quality%20image&width=600&height=400&seq=6&orientation=landscape" alt="Ресторан в Сочи" class="w-full h-48 object-cover object-top">
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">Сочи - Морской</h3>
+<p class="text-gray-600 mb-4">ул. Морская, 15</p>
+<div class="flex items-center mb-4">
+<div class="flex text-yellow-400">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-line"></i>
+</div>
+<span class="text-gray-600 ml-2">4.2 (187 отзывов)</span>
+</div>
+<button class="w-full bg-primary text-white py-2 !rounded-button hover:bg-opacity-90 transition-colors whitespace-nowrap">Подробнее</button>
+</div>
+</div>
+</div>
+<div class="masonry-item">
+<div class="bg-white rounded-lg overflow-hidden shadow-lg h-full">
+<img src="https://readdy.ai/api/search-image?query=elegant%20restaurant%20interior%20with%20Kazan%20city%20view%2C%20fusion%20of%20modern%20and%20traditional%20Tatar%20design%20elements%2C%20avocado-themed%20decor%2C%20professional%20interior%20photography%2C%20soft%20lighting%2C%20luxury%20dining%20experience%2C%20sophisticated%20atmosphere%2C%20premium%20quality%20image&width=600&height=800&seq=7&orientation=portrait" alt="Ресторан в Казани" class="w-full h-72 object-cover object-top">
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">Казань - Центр</h3>
+<p class="text-gray-600 mb-4">ул. Баумана, 31</p>
+<div class="flex items-center mb-4">
+<div class="flex text-yellow-400">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-half-fill"></i>
+</div>
+<span class="text-gray-600 ml-2">4.7 (156 отзывов)</span>
+</div>
+<button class="w-full bg-primary text-white py-2 !rounded-button hover:bg-opacity-90 transition-colors whitespace-nowrap">Подробнее</button>
+</div>
+</div>
+</div>
+<div class="masonry-item">
+<div class="bg-white rounded-lg overflow-hidden shadow-lg h-full">
+<img src="https://readdy.ai/api/search-image?query=modern%20restaurant%20interior%20in%20Yekaterinburg%20with%20industrial%20design%20elements%2C%20avocado-themed%20decor%2C%20professional%20interior%20photography%2C%20evening%20atmosphere%2C%20elegant%20dining%20space%2C%20soft%20lighting%2C%20luxury%20experience%2C%20urban%20view%20through%20windows%2C%20premium%20quality%20image&width=600&height=400&seq=8&orientation=landscape" alt="Ресторан в Екатеринбурге" class="w-full h-48 object-cover object-top">
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">Екатеринбург</h3>
+<p class="text-gray-600 mb-4">ул. Ленина, 40</p>
+<div class="flex items-center mb-4">
+<div class="flex text-yellow-400">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-line"></i>
+</div>
+<span class="text-gray-600 ml-2">4.3 (112 отзывов)</span>
+</div>
+<button class="w-full bg-primary text-white py-2 !rounded-button hover:bg-opacity-90 transition-colors whitespace-nowrap">Подробнее</button>
+</div>
+</div>
+</div>
+<div class="masonry-item">
+<div class="bg-white rounded-lg overflow-hidden shadow-lg h-full">
+<img src="https://readdy.ai/api/search-image?query=luxury%20restaurant%20with%20panoramic%20view%20of%20Vladivostok%20bay%20and%20Golden%20Horn%20Bridge%2C%20avocado-themed%20interior%20design%2C%20seafood%20display%2C%20professional%20photography%2C%20evening%20atmosphere%2C%20elegant%20dining%20space%2C%20soft%20lighting%2C%20premium%20quality%20image&width=600&height=400&seq=9&orientation=landscape" alt="Ресторан во Владивостоке" class="w-full h-48 object-cover object-top">
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">Владивосток</h3>
+<p class="text-gray-600 mb-4">ул. Светланская, 83</p>
+<div class="flex items-center mb-4">
+<div class="flex text-yellow-400">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-half-fill"></i>
+</div>
+<span class="text-gray-600 ml-2">4.6 (98 отзывов)</span>
+</div>
+<button class="w-full bg-primary text-white py-2 !rounded-button hover:bg-opacity-90 transition-colors whitespace-nowrap">Подробнее</button>
+</div>
+</div>
+</div>
+</div>
+<div class="text-center mt-12">
+<button class="bg-white border border-primary text-primary px-8 py-3 !rounded-button hover:bg-primary hover:text-white transition-colors whitespace-nowrap">Показать больше ресторанов</button>
+</div>
+</div>
+</section>
+<!-- Наша команда -->
+<section id="team" class="py-16 bg-white">
+<div class="container mx-auto px-6">
+<h2 class="text-4xl font-bold text-center mb-4">Профессиональная команда поваров</h2>
+<p class="text-xl text-center text-gray-600 mb-12">Мастера кулинарного искусства, создающие неповторимые шедевры</p>
+<div class="relative">
+<div class="flex overflow-x-hidden" id="chef-carousel">
+<div class="chef-card flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-4">
+<div class="bg-gray-50 rounded-lg overflow-hidden shadow-lg">
+<img src="https://readdy.ai/api/search-image?query=professional%20male%20chef%20portrait%2C%20confident%20pose%2C%20wearing%20white%20chef%20uniform%20with%20green%20avocado%20logo%2C%20kitchen%20background%2C%20professional%20photography%2C%20soft%20lighting%2C%2035%20years%20old%2C%20Russian%20appearance%2C%20premium%20quality%20image&width=600&height=700&seq=10&orientation=portrait" alt="Шеф-повар Александр Иванов" class="w-full h-80 object-cover object-top">
+<div class="p-6">
+<h3 class="text-2xl font-semibold mb-2">Александр Иванов</h3>
+<p class="text-primary font-medium mb-3">Главный шеф-повар сети</p>
+<p class="text-gray-600 mb-4">15 лет опыта в ресторанах Франции и России. Специализация: авторская кухня с акцентом на локальные продукты.</p>
+<div class="flex space-x-4">
+<a href="#" class="text-gray-600 hover:text-primary">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-instagram-line"></i>
+</div>
+</a>
+<a href="#" class="text-gray-600 hover:text-primary">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-facebook-circle-line"></i>
+</div>
+</a>
+<a href="#" class="text-gray-600 hover:text-primary">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-twitter-line"></i>
+</div>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="chef-card flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-4">
+<div class="bg-gray-50 rounded-lg overflow-hidden shadow-lg">
+<img src="https://readdy.ai/api/search-image?query=professional%20female%20chef%20portrait%2C%20confident%20pose%2C%20wearing%20white%20chef%20uniform%20with%20green%20avocado%20logo%2C%20kitchen%20background%2C%20professional%20photography%2C%20soft%20lighting%2C%2030%20years%20old%2C%20Russian%20appearance%2C%20premium%20quality%20image&width=600&height=700&seq=11&orientation=portrait" alt="Шеф-повар Екатерина Смирнова" class="w-full h-80 object-cover object-top">
+<div class="p-6">
+<h3 class="text-2xl font-semibold mb-2">Екатерина Смирнова</h3>
+<p class="text-primary font-medium mb-3">Шеф-кондитер</p>
+<p class="text-gray-600 mb-4">Победитель международных конкурсов кондитерского искусства. Специализация: авторские десерты с использованием сезонных ягод и фруктов.</p>
+<div class="flex space-x-4">
+<a href="#" class="text-gray-600 hover:text-primary">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-instagram-line"></i>
+</div>
+</a>
+<a href="#" class="text-gray-600 hover:text-primary">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-facebook-circle-line"></i>
+</div>
+</a>
+<a href="#" class="text-gray-600 hover:text-primary">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-twitter-line"></i>
+</div>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="chef-card flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-4">
+<div class="bg-gray-50 rounded-lg overflow-hidden shadow-lg">
+<img src="https://readdy.ai/api/search-image?query=professional%20male%20chef%20portrait%2C%20confident%20pose%2C%20wearing%20white%20chef%20uniform%20with%20green%20avocado%20logo%2C%20kitchen%20background%2C%20professional%20photography%2C%20soft%20lighting%2C%2040%20years%20old%2C%20Russian%20appearance%2C%20premium%20quality%20image&width=600&height=700&seq=12&orientation=portrait" alt="Шеф-повар Дмитрий Петров" class="w-full h-80 object-cover object-top">
+<div class="p-6">
+<h3 class="text-2xl font-semibold mb-2">Дмитрий Петров</h3>
+<p class="text-primary font-medium mb-3">Шеф-повар (Москва)</p>
+<p class="text-gray-600 mb-4">Опыт работы в ресторанах Италии и Испании. Специализация: средиземноморская кухня с акцентом на морепродукты и овощи.</p>
+<div class="flex space-x-4">
+<a href="#" class="text-gray-600 hover:text-primary">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-instagram-line"></i>
+</div>
+</a>
+<a href="#" class="text-gray-600 hover:text-primary">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-facebook-circle-line"></i>
+</div>
+</a>
+<a href="#" class="text-gray-600 hover:text-primary">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-twitter-line"></i>
+</div>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="chef-card flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-4">
+<div class="bg-gray-50 rounded-lg overflow-hidden shadow-lg">
+<img src="https://readdy.ai/api/search-image?query=professional%20female%20chef%20portrait%2C%20confident%20pose%2C%20wearing%20white%20chef%20uniform%20with%20green%20avocado%20logo%2C%20kitchen%20background%2C%20professional%20photography%2C%20soft%20lighting%2C%2028%20years%20old%2C%20Russian%20appearance%2C%20premium%20quality%20image&width=600&height=700&seq=13&orientation=portrait" alt="Шеф-повар Анна Козлова" class="w-full h-80 object-cover object-top">
+<div class="p-6">
+<h3 class="text-2xl font-semibold mb-2">Анна Козлова</h3>
+<p class="text-primary font-medium mb-3">Шеф-повар (Санкт-Петербург)</p>
+<p class="text-gray-600 mb-4">Выпускница кулинарной академии Le Cordon Bleu. Специализация: французская кухня с современными интерпретациями.</p>
+<div class="flex space-x-4">
+<a href="#" class="text-gray-600 hover:text-primary">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-instagram-line"></i>
+</div>
+</a>
+<a href="#" class="text-gray-600 hover:text-primary">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-facebook-circle-line"></i>
+</div>
+</a>
+<a href="#" class="text-gray-600 hover:text-primary">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-twitter-line"></i>
+</div>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<button class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white shadow-lg w-12 h-12 rounded-full flex items-center justify-center text-primary z-10" id="prev-chef">
+<div class="w-12 h-12 flex items-center justify-center">
+<i class="ri-arrow-left-s-line ri-2x"></i>
+</div>
+</button>
+<button class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white shadow-lg w-12 h-12 rounded-full flex items-center justify-center text-primary z-10" id="next-chef">
+<div class="w-12 h-12 flex items-center justify-center">
+<i class="ri-arrow-right-s-line ri-2x"></i>
+</div>
+</button>
+</div>
+<div class="flex justify-center mt-8">
+<div class="flex space-x-2" id="chef-dots">
+<button class="w-3 h-3 rounded-full bg-primary"></button>
+<button class="w-3 h-3 rounded-full bg-gray-300"></button>
+<button class="w-3 h-3 rounded-full bg-gray-300"></button>
+<button class="w-3 h-3 rounded-full bg-gray-300"></button>
+</div>
+</div>
+</div>
+</section>
+<!-- Галерея блюд -->
+<section id="gallery" class="py-16 bg-gray-50">
+<div class="container mx-auto px-6">
+<h2 class="text-4xl font-bold text-center mb-4">Галерея фирменных блюд</h2>
+<p class="text-xl text-center text-gray-600 mb-12">Кулинарные шедевры от наших шеф-поваров</p>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="food-gallery-item rounded-lg overflow-hidden shadow-lg">
+<img src="https://readdy.ai/api/search-image?query=gourmet%20avocado%20toast%20with%20poached%20egg%2C%20microgreens%2C%20and%20edible%20flowers%20on%20artisan%20bread%2C%20professional%20food%20photography%2C%20soft%20natural%20lighting%2C%20restaurant%20presentation%2C%20luxury%20plating%2C%20white%20plate%2C%20wooden%20table%20background%2C%20premium%20quality%20image&width=600&height=600&seq=14&orientation=squarish" alt="Авокадо-тост с яйцом пашот" class="w-full h-72 object-cover"><div class="food-gallery-caption">
+<h3 class="text-lg font-semibold">Авокадо-тост с яйцом пашот</h3>
+<p class="text-sm">Шеф-повар: Александр Иванов</p>
+</div>
+</div>
+<div class="food-gallery-item rounded-lg overflow-hidden shadow-lg">
+<img src="https://readdy.ai/api/search-image?query=elegant%20avocado%20and%20seafood%20ceviche%20with%20lime%2C%20cilantro%2C%20and%20edible%20flowers%20in%20a%20crystal%20bowl%2C%20professional%20food%20photography%2C%20soft%20natural%20lighting%2C%20luxury%20restaurant%20presentation%2C%20premium%20ingredients%2C%20artistic%20plating%2C%20premium%20quality%20image&width=600&height=600&seq=15&orientation=squarish" alt="Севиче из морепродуктов с авокадо" class="w-full h-72 object-cover">
+<div class="food-gallery-caption">
+<h3 class="text-lg font-semibold">Севиче из морепродуктов с авокадо</h3>
+<p class="text-sm">Шеф-повар: Дмитрий Петров</p>
+</div>
+</div>
+<div class="food-gallery-item rounded-lg overflow-hidden shadow-lg">
+<img src="https://readdy.ai/api/search-image?query=gourmet%20avocado%20chocolate%20mousse%20dessert%20with%20gold%20leaf%2C%20berries%2C%20and%20mint%20in%20an%20elegant%20glass%2C%20professional%20food%20photography%2C%20soft%20natural%20lighting%2C%20luxury%20restaurant%20presentation%2C%20artistic%20plating%2C%20dark%20background%2C%20premium%20quality%20image&width=600&height=600&seq=16&orientation=squarish" alt="Шоколадный мусс с авокадо" class="w-full h-72 object-cover">
+<div class="food-gallery-caption">
+<h3 class="text-lg font-semibold">Шоколадный мусс с авокадо</h3>
+<p class="text-sm">Шеф-кондитер: Екатерина Смирнова</p>
+</div>
+</div>
+<div class="food-gallery-item rounded-lg overflow-hidden shadow-lg">
+<img src="https://readdy.ai/api/search-image?query=elegant%20avocado%20and%20crab%20salad%20with%20citrus%20segments%2C%20microgreens%2C%20and%20edible%20flowers%20on%20a%20black%20plate%2C%20professional%20food%20photography%2C%20soft%20natural%20lighting%2C%20luxury%20restaurant%20presentation%2C%20artistic%20plating%2C%20premium%20ingredients%2C%20premium%20quality%20image&width=600&height=600&seq=17&orientation=squarish" alt="Салат с крабом и авокадо" class="w-full h-72 object-cover">
+<div class="food-gallery-caption">
+<h3 class="text-lg font-semibold">Салат с крабом и авокадо</h3>
+<p class="text-sm">Шеф-повар: Анна Козлова</p>
+</div>
+</div>
+<div class="food-gallery-item rounded-lg overflow-hidden shadow-lg">
+<img src="https://readdy.ai/api/search-image?query=gourmet%20avocado%20and%20salmon%20tartare%20with%20caviar%2C%20microgreens%2C%20and%20edible%20flowers%20on%20a%20marble%20plate%2C%20professional%20food%20photography%2C%20soft%20natural%20lighting%2C%20luxury%20restaurant%20presentation%2C%20artistic%20plating%2C%20premium%20ingredients%2C%20premium%20quality%20image&width=600&height=600&seq=18&orientation=squarish" alt="Тартар из лосося с авокадо" class="w-full h-72 object-cover">
+<div class="food-gallery-caption">
+<h3 class="text-lg font-semibold">Тартар из лосося с авокадо</h3>
+<p class="text-sm">Шеф-повар: Дмитрий Петров</p>
+</div>
+</div>
+<div class="food-gallery-item rounded-lg overflow-hidden shadow-lg">
+<img src="https://readdy.ai/api/search-image?query=elegant%20avocado%20ice%20cream%20with%20pistachio%20crumble%2C%20gold%20leaf%2C%20and%20fresh%20berries%20in%20a%20crystal%20bowl%2C%20professional%20food%20photography%2C%20soft%20natural%20lighting%2C%20luxury%20restaurant%20presentation%2C%20artistic%20plating%2C%20premium%20quality%20image&width=600&height=600&seq=19&orientation=squarish" alt="Мороженое из авокадо" class="w-full h-72 object-cover">
+<div class="food-gallery-caption">
+<h3 class="text-lg font-semibold">Мороженое из авокадо с фисташками</h3>
+<p class="text-sm">Шеф-кондитер: Екатерина Смирнова</p>
+</div>
+</div>
+</div>
+<div class="text-center mt-12">
+<button class="bg-white border border-primary text-primary px-8 py-3 !rounded-button hover:bg-primary hover:text-white transition-colors whitespace-nowrap">Показать больше блюд</button>
+</div>
+</div>
+</section>
+<!-- Контактная информация -->
+<section id="contact" class="py-16 bg-white">
+<div class="container mx-auto px-6">
+<div class="flex flex-col lg:flex-row gap-12">
+<div class="w-full lg:w-1/2">
+<h2 class="text-4xl font-bold mb-6">Свяжитесь с нами</h2>
+<p class="text-gray-600 mb-8">Остались вопросы или хотите забронировать столик? Заполните форму, и мы свяжемся с вами в ближайшее время.</p>
+<form class="space-y-6">
+<div>
+<label for="name" class="block text-gray-700 mb-2">Имя</label>
+<input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Ваше имя">
+</div>
+<div>
+<label for="email" class="block text-gray-700 mb-2">Email</label>
+<input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Ваш email">
+</div>
+<div>
+<label for="phone" class="block text-gray-700 mb-2">Телефон</label>
+<input type="tel" id="phone" class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="+7 (___) ___-__-__">
+</div>
+<div>
+<label for="message" class="block text-gray-700 mb-2">Сообщение</label>
+<textarea id="message" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Ваше сообщение"></textarea>
+</div>
+<div class="flex items-center">
+<div class="relative inline-block w-10 h-6 mr-2">
+<input type="checkbox" id="consent" class="opacity-0 w-0 h-0">
+<span class="absolute cursor-pointer top-0 left-0 right-0 bottom-0 bg-gray-300 rounded-full transition-all duration-300 before:content-[''] before:absolute before:h-4 before:w-4 before:left-1 before:bottom-1 before:bg-white before:rounded-full before:transition-all before:duration-300"></span>
+</div>
+<label for="consent" class="text-gray-600 text-sm">Я согласен на обработку персональных данных</label>
+</div>
+<button type="submit" class="bg-primary text-white px-8 py-3 !rounded-button hover:bg-opacity-90 transition-colors whitespace-nowrap">Отправить сообщение</button>
+</form>
+</div>
+<div class="w-full lg:w-1/2">
+<div class="bg-gray-50 p-8 rounded-lg shadow-lg h-full">
+<h3 class="text-2xl font-semibold mb-6">Контактная информация</h3>
+<div class="space-y-6">
+<div class="flex items-start">
+<div class="w-10 h-10 flex items-center justify-center bg-primary bg-opacity-10 rounded-full text-primary mr-4">
+<i class="ri-phone-line"></i>
+</div>
+<div>
+<h4 class="font-medium text-gray-900">Телефон</h4>
+<p class="text-gray-600">+7 (800) 123-45-67</p>
+<p class="text-gray-600">Ежедневно с 10:00 до 20:00</p>
+</div>
+</div>
+<div class="flex items-start">
+<div class="w-10 h-10 flex items-center justify-center bg-primary bg-opacity-10 rounded-full text-primary mr-4">
+<i class="ri-mail-line"></i>
+</div>
+<div>
+<h4 class="font-medium text-gray-900">Email</h4>
+<p class="text-gray-600">info@avocadoqueens.ru</p>
+<p class="text-gray-600">reservations@avocadoqueens.ru</p>
+</div>
+</div>
+<div class="flex items-start">
+<div class="w-10 h-10 flex items-center justify-center bg-primary bg-opacity-10 rounded-full text-primary mr-4">
+<i class="ri-map-pin-line"></i>
+</div>
+<div>
+<h4 class="font-medium text-gray-900">Центральный офис</h4>
+<p class="text-gray-600">г. Москва, ул. Тверская, 5</p>
+<p class="text-gray-600">Бизнес-центр "Премиум", 10 этаж</p>
+</div>
+</div>
+</div>
+<div class="mt-8">
+<h4 class="font-medium text-gray-900 mb-4">Мы в социальных сетях</h4>
+<div class="flex space-x-4">
+<a href="#" class="w-10 h-10 flex items-center justify-center bg-primary bg-opacity-10 rounded-full text-primary hover:bg-primary hover:text-white transition-colors">
+<i class="ri-instagram-line"></i>
+</a>
+<a href="#" class="w-10 h-10 flex items-center justify-center bg-primary bg-opacity-10 rounded-full text-primary hover:bg-primary hover:text-white transition-colors">
+<i class="ri-facebook-circle-line"></i>
+</a>
+<a href="#" class="w-10 h-10 flex items-center justify-center bg-primary bg-opacity-10 rounded-full text-primary hover:bg-primary hover:text-white transition-colors">
+<i class="ri-twitter-line"></i>
+</a>
+<a href="#" class="w-10 h-10 flex items-center justify-center bg-primary bg-opacity-10 rounded-full text-primary hover:bg-primary hover:text-white transition-colors">
+<i class="ri-youtube-line"></i>
+</a>
+<a href="#" class="w-10 h-10 flex items-center justify-center bg-primary bg-opacity-10 rounded-full text-primary hover:bg-primary hover:text-white transition-colors">
+<i class="ri-telegram-line"></i>
+</a>
+</div>
+</div>
+<div class="mt-8">
+<button class="w-full bg-primary text-white py-3 !rounded-button hover:bg-opacity-90 transition-colors whitespace-nowrap">
+<div class="flex items-center justify-center">
+<div class="w-6 h-6 flex items-center justify-center mr-2">
+<i class="ri-calendar-line"></i>
+</div>
+<span>Забронировать столик</span>
+</div>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Футер -->
+<footer class="bg-gray-900 text-white py-12">
+<div class="container mx-auto px-6">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+<div>
+<h3 class="text-2xl font-['Pacifico'] mb-6">Avocado Queens</h3>
+<p class="text-gray-400 mb-6">Сеть ресторанов высокой кухни с уникальным авторским меню и безупречным сервисом.</p>
+<div class="flex space-x-4">
+<a href="#" class="text-gray-400 hover:text-white transition-colors">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-instagram-line"></i>
+</div>
+</a>
+<a href="#" class="text-gray-400 hover:text-white transition-colors">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-facebook-circle-line"></i>
+</div>
+</a>
+<a href="#" class="text-gray-400 hover:text-white transition-colors">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-twitter-line"></i>
+</div>
+</a>
+</div>
+</div>
+<div>
+<h4 class="text-lg font-semibold mb-6">Рестораны</h4>
+<ul class="space-y-3">
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Москва</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Санкт-Петербург</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Казань</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Сочи</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Екатеринбург</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Все рестораны</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-lg font-semibold mb-6">Информация</h4>
+<ul class="space-y-3">
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">О нас</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Меню</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Команда</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Карьера</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Франшиза</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Контакты</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-lg font-semibold mb-6">Подписка</h4>
+<p class="text-gray-400 mb-4">Подпишитесь на нашу рассылку, чтобы получать новости и специальные предложения.</p>
+<form class="mb-4">
+<div class="flex">
+<input type="email" placeholder="Ваш email" class="px-4 py-2 w-full rounded-l border-none focus:outline-none focus:ring-2 focus:ring-primary text-gray-900">
+<button type="submit" class="bg-primary text-white px-4 py-2 rounded-r hover:bg-opacity-90 transition-colors whitespace-nowrap">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-send-plane-line"></i>
+</div>
+</button>
+</div>
+</form>
+<p class="text-gray-400 text-sm">© 2025 Avocado Queens. Все права защищены.</p>
+</div>
+</div>
+<div class="border-t border-gray-800 mt-12 pt-8">
+<div class="flex flex-col md:flex-row justify-between items-center">
+<div class="mb-4 md:mb-0">
+<ul class="flex flex-wrap gap-4 justify-center md:justify-start">
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Политика конфиденциальности</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Пользовательское соглашение</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Карта сайта</a></li>
+</ul>
+</div>
+<div class="flex items-center space-x-4">
+<div class="w-8 h-8 flex items-center justify-center text-gray-400">
+<i class="ri-visa-fill ri-lg"></i>
+</div>
+<div class="w-8 h-8 flex items-center justify-center text-gray-400">
+<i class="ri-mastercard-fill ri-lg"></i>
+</div>
+<div class="w-8 h-8 flex items-center justify-center text-gray-400">
+<i class="ri-paypal-fill ri-lg"></i>
+</div>
+<div class="w-8 h-8 flex items-center justify-center text-gray-400">
+<i class="ri-apple-fill ri-lg"></i>
+</div>
+</div>
+</div>
+</div>
+</div>
+</footer>
+<script id="hero-slider">
+document.addEventListener('DOMContentLoaded', function() {
+const slides = document.querySelectorAll('.hero-slide');
+const dots = document.querySelectorAll('.slider-dot');
+const prevButton = document.getElementById('prev-slide');
+const nextButton = document.getElementById('next-slide');
+let currentSlide = 0;
+function showSlide(index) {
+slides.forEach(slide => slide.classList.remove('active'));
+dots.forEach(dot => dot.classList.remove('active'));
+slides[index].classList.add('active');
+dots[index].classList.add('active');
+currentSlide = index;
+}
+function nextSlide() {
+let next = currentSlide + 1;
+if (next >= slides.length) next = 0;
+showSlide(next);
+}
+function prevSlide() {
+let prev = currentSlide - 1;
+if (prev < 0) prev = slides.length - 1;
+showSlide(prev);
+}
+// Event listeners
+prevButton.addEventListener('click', prevSlide);
+nextButton.addEventListener('click', nextSlide);
+dots.forEach((dot, index) => {
+dot.addEventListener('click', () => {
+showSlide(index);
+});
+});
+// Auto slide
+let slideInterval = setInterval(nextSlide, 5000);
+// Pause on hover
+const heroSlider = document.querySelector('.hero-slider');
+heroSlider.addEventListener('mouseenter', () => {
+clearInterval(slideInterval);
+});
+heroSlider.addEventListener('mouseleave', () => {
+slideInterval = setInterval(nextSlide, 5000);
+});
+});
+</script>
+<script id="chef-carousel">
+document.addEventListener('DOMContentLoaded', function() {
+const carousel = document.getElementById('chef-carousel');
+const chefCards = carousel.querySelectorAll('.chef-card');
+const prevButton = document.getElementById('prev-chef');
+const nextButton = document.getElementById('next-chef');
+const dots = document.querySelectorAll('#chef-dots button');
+let currentIndex = 0;
+let cardWidth = chefCards[0].offsetWidth;
+let cardsPerView = 3;
+// Adjust cards per view based on screen size
+function updateCardsPerView() {
+if (window.innerWidth < 768) {
+cardsPerView = 1;
+} else if (window.innerWidth < 1024) {
+cardsPerView = 2;
+} else {
+cardsPerView = 3;
+}
+cardWidth = chefCards[0].offsetWidth;
+showSlide(currentIndex);
+}
+function showSlide(index) {
+if (index < 0) index = 0;
+if (index > chefCards.length - cardsPerView) index = chefCards.length - cardsPerView;
+carousel.style.transform = `translateX(-${index * cardWidth}px)`;
+currentIndex = index;
+// Update dots
+dots.forEach((dot, i) => {
+dot.classList.toggle('bg-primary', i === Math.floor(index / cardsPerView));
+dot.classList.toggle('bg-gray-300', i !== Math.floor(index / cardsPerView));
+});
+}
+// Event listeners
+prevButton.addEventListener('click', () => {
+showSlide(currentIndex - 1);
+});
+nextButton.addEventListener('click', () => {
+showSlide(currentIndex + 1);
+});
+dots.forEach((dot, i) => {
+dot.addEventListener('click', () => {
+showSlide(i * cardsPerView);
+});
+});
+// Initialize
+updateCardsPerView();
+window.addEventListener('resize', updateCardsPerView);
+});
+</script>
+<script id="toggle-switch">
+document.addEventListener('DOMContentLoaded', function() {
+const toggleSwitch = document.getElementById('consent');
+const switchSlider = toggleSwitch.nextElementSibling;
+toggleSwitch.addEventListener('change', function() {
+if (this.checked) {
+switchSlider.classList.add('bg-primary');
+switchSlider.classList.remove('bg-gray-300');
+switchSlider.style.setProperty('--before-transform', 'translateX(20px)');
+} else {
+switchSlider.classList.remove('bg-primary');
+switchSlider.classList.add('bg-gray-300');
+switchSlider.style.setProperty('--before-transform', 'translateX(0)');
+}
+});
+// Style the switch
+if (toggleSwitch.checked) {
+switchSlider.classList.add('bg-primary');
+switchSlider.style.setProperty('--before-transform', 'translateX(20px)');
+}
+});
+</script>
+<script id="phone-mask">
+document.addEventListener('DOMContentLoaded', function() {
+const phoneInput = document.getElementById('phone');
+phoneInput.addEventListener('input', function(e) {
+let value = e.target.value.replace(/\D/g, '');
+if (value.length > 0) {
+if (value[0] === '7' || value[0] === '8') {
+value = value.substring(1);
+}
+let formattedValue = '+7';
+if (value.length > 0) {
+formattedValue += ' (' + value.substring(0, 3);
+}
+if (value.length > 3) {
+formattedValue += ') ' + value.substring(3, 6);
+}
+if (value.length > 6) {
+formattedValue += '-' + value.substring(6, 8);
+}
+if (value.length > 8) {
+formattedValue += '-' + value.substring(8, 10);
+}
+e.target.value = formattedValue;
+}
+});
+});
+</script>
+</body>
+</html>
